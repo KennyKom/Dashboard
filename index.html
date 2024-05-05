@@ -21,6 +21,17 @@
               </form>
             </div>
             <canvas id="bar_chart" width="1000" height="500" class="bar__chart"></canvas>
+        </section>
+        <section class="chart">
+            <div class="chart__form-wrapper">
+              <form name="line_chart_form" class="chart__form">
+                <input type="text" class="chart__input" id="lineUseremail" name="lineUseremail" placeholder="Enter Month">
+                <input type="text" class="chart__input" id="lineCommentbody" name="lineCommentbody" placeholder="Enter Comment">
+                <button type="submit" class="chart__button line-chart__button-submit">Update</button>
+                <button type="reset" class="chart__button line-chart__button-reset">Reset</button>
+              </form>
+            </div>
+            <canvas id="line_chart" width="1000" height="500" class="line__chart"></canvas>
           </section>
     </main>
     <script src="script.js" type="module"></script>
