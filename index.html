@@ -6,7 +6,23 @@
     <title>Data Visualization Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="content">
+    <header class="header">
+        <h1 class="header__title">Data Visualization Dashboard</h1>
+    </header>
+    <main class="content">
+        <section class="chart">
+            <div class="chart__form-wrapper">
+              <form name="bar_chart_form" class="chart__form">
+                <input type="text" class="chart__input" id="barUsername" name="barUsername" placeholder="Enter Username">
+                <input type="text" class="chart__input" id="barPostbody" name="barPostbody" placeholder="Enter Post">
+                <button type="submit" class="chart__button bar-chart__button-submit">Update</button>
+                <button type="reset" class="chart__button bar-chart__button-reset">Reset</button>
+              </form>
+            </div>
+            <canvas id="bar_chart" width="1000" height="500" class="bar__chart"></canvas>
+          </section>
+    </main>
     <script src="script.js" type="module"></script>
 </body>
 </html>
