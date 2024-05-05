@@ -3,6 +3,7 @@ export const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 export const COMMENTS_URL = 'https://jsonplaceholder.typicode.com/comments';
 
 import generateBarChart, { canvasBarChart } from './charts/barChart.js';
+import generateLineChart, { canvasLineChart } from './charts/lineChart.js';
 
 const bodyContent = document.querySelector('.page');
 
@@ -22,6 +23,8 @@ setTimeout(function () {
 
 setTimeout(function () {
     canvasBarChart.classList.add('canvas__visible');
+    canvasLineChart.classList.add('canvas__visible');
 }, 0);
   
 generateBarChart();
+generateLineChart();

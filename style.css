@@ -103,7 +103,8 @@
     transform: scale(0.97);
 }
   
-.bar__chart{
+.bar__chart,
+.line__chart{
     margin-bottom: 50px;
     opacity: 0;
     transition: opacity 1s;
