@@ -1,0 +1,115 @@
+.page {
+    background-color: #ffffff;
+    min-width: 320px;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    opacity: 0;
+    transition: opacity 1s;
+}
+  
+.page_visible {
+    opacity: 1;
+}
+  
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    font-size: 32px;
+    border-bottom: 1px solid #c0c0c0;
+}
+  
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+  
+.chart {
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+  
+.chart__form-wrapper {
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+  
+.chart__form {
+    max-width: 500px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    column-gap: 50px;
+}
+  
+.chart__input {
+    border: none;
+    border-radius: 12px;
+    width: 195px;
+    height: 30px;
+    padding: 0 0 0 15px;
+    color: #000000;
+    background-color: rgba(146 249 133 / 62%);
+    font-size: 12px;
+}
+  
+.chart__input:focus {
+    font-size: 12px;
+    font-weight: 400;
+    outline: none;
+    padding-left: 15px;
+}
+  
+.chart__button {
+    width: 210px;
+    height: 30px;
+    padding: 0;
+    margin: 30px 0 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    color: #ffffff;
+    font-weight: 600;
+    background-color: #11b72f;
+    transition: background-color 0.3s, opacity 0.3s, transform 0.3s;
+}
+  
+.chart__button:hover {
+    opacity: 0.9;
+    background-color: #4ee000;
+    transform: scale(1.03);
+}
+  
+.chart__button:active {
+    transform: scale(0.97);
+}
+  
+.bar__chart{
+    margin-bottom: 50px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+  
+.canvas__visible {
+    opacity: 1;
+}
+  
