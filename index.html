@@ -32,7 +32,18 @@
               </form>
             </div>
             <canvas id="line_chart" width="1000" height="500" class="line__chart"></canvas>
-          </section>
+        </section>
+        <section class="chart">
+            <div class="chart__form-wrapper">
+              <form name="pie_chart_form" class="chart__form">
+                <input type="text" class="chart__input" id="pieUsername" name="pieUsername" placeholder="Enter Username">
+                <input type="text" class="chart__input" id="piePostbody" name="piePostbody" placeholder="Enter Post">
+                <button type="submit" class="chart__button pie-chart__button-submit">Update</button>
+                <button type="reset" class="chart__button pie-chart__button-reset">Reset</button>
+              </form>
+            </div>
+            <canvas id="pie_chart" width="1000" height="500" class="pie__chart"></canvas>
+        </section>
     </main>
     <script src="script.js" type="module"></script>
 </body>

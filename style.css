@@ -104,7 +104,8 @@
 }
   
 .bar__chart,
-.line__chart{
+.line__chart,
+.pie__chart {
     margin-bottom: 50px;
     opacity: 0;
     transition: opacity 1s;
