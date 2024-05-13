@@ -1,7 +1,7 @@
 import { POSTS_URL, USERS_URL } from '../script.js';
 import getData from '../script.js';
 
-export const canvasPieChart = document.getElementById('pie_chart');
+const canvasPieChart = document.getElementById('pie_chart');
 const ctxPc = canvasPieChart.getContext('2d');
 const canvasWidthPc = canvasPieChart.clientWidth;
 const canvasHeightPc = canvasPieChart.clientHeight;
@@ -14,6 +14,8 @@ const pieChartResetButton = document.querySelector('.pie-chart__button-reset');
 export default function generatePieChart() {
   const posts = getData(POSTS_URL);
   const users = getData(USERS_URL);
+
+  canvasPieChart.classList.add('canvas__visible');
 
   function updatePieChartData(userInput, postInput) {
     Promise.all([posts, users]).then((data) => {

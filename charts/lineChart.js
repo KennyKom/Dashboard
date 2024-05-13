@@ -1,7 +1,7 @@
 import { COMMENTS_URL } from '../script.js';
 import getData from '../script.js';
 
-export const canvasLineChart = document.getElementById('line_chart');
+const canvasLineChart = document.getElementById('line_chart');
 const ctxLc = canvasLineChart.getContext('2d');
 const canvasWidthLc = canvasLineChart.clientWidth;
 const canvasHeightLc = canvasLineChart.clientHeight;
@@ -13,6 +13,8 @@ const lineChartResetButton = document.querySelector('.line-chart__button-reset')
 
 export default function generateLineChart() {
   const commentsData = getData(COMMENTS_URL);
+
+  canvasLineChart.classList.add('canvas__visible');
 
   const date = {};
 

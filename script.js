@@ -15,7 +15,7 @@ export default async function getData(url) {
 
   return data.json();
 }
-
+  
 generateBarChart();
 generateLineChart();
 generatePieChart();

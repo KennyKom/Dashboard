@@ -1,13 +1,12 @@
 import { USERS_URL, POSTS_URL } from '../script.js';
 import getData from '../script.js';
 
-export const canvasBarChart = document.getElementById('bar_chart');
+const canvasBarChart = document.getElementById('bar_chart');
 const ctx = canvasBarChart.getContext('2d');
 const canvasWidth = canvasBarChart.clientWidth;
 const canvasHeight = canvasBarChart.clientHeight;
 const barChartForm = document.forms.bar_chart_form;
 const barChartUserInput = barChartForm.elements.barUsername;
-const barChartPostInput = barChartForm.elements.barPostbody;
 const barChartSubmitButton = document.querySelector('.bar-chart__button-submit');
 const barChartResetButton = document.querySelector('.bar-chart__button-reset');
 
@@ -15,7 +14,9 @@ export default function generateBarChart() {
   const posts = getData(POSTS_URL);
   const users = getData(USERS_URL);
 
-  function updateBarChartData(userInput, postInput) {
+  canvasBarChart.classList.add('canvas__visible');
+
+  function updateBarChartData(userInput) {
     Promise.all([posts, users]).then((data) => {
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -58,12 +59,6 @@ export default function generateBarChart() {
       }
 
       let filteredPosts = data[0];
-
-      if (postInput) {
-        filteredPosts = filteredPosts.filter((post) =>
-          post.body.toLowerCase().includes(postInput.toLowerCase()),
-        );
-      }
 
       for (let i = 0; i < users.length; i++) {
         filteredPosts.forEach((item) => {
@@ -152,26 +147,15 @@ export default function generateBarChart() {
   updateBarChartData();
 
   let userInput = '';
-  let postInput = '';
 
   barChartSubmitButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    canvasBarChart.classList.remove('canvas__visible');
     userInput = barChartUserInput.value;
-    postInput = barChartPostInput.value;
-    setTimeout(function () {
-      updateBarChartData(userInput, postInput);
-      canvasBarChart.classList.add('canvas__visible');
-    }, 0);
+    updateBarChartData(userInput);
   });
 
   barChartResetButton.addEventListener('click', () => {
-    canvasBarChart.classList.remove('canvas__visible');
     userInput = '';
-    postInput = '';
-    setTimeout(function () {
-      updateBarChartData(userInput, postInput);
-      canvasBarChart.classList.add('canvas__visible');
-    }, 0);
+    updateBarChartData(userInput);;
   });
 }
