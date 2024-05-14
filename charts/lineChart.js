@@ -160,22 +160,14 @@ export default function generateLineChart() {
 
   lineChartSubmitButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    canvasLineChart.classList.remove('canvas__visible');
     userEmailInput = lineChartUseremailInput.value;
     commentBodyInput = lineChartCommentBodyInput.value;
-    setTimeout(function () {
-      updateLineChartData(userEmailInput, commentBodyInput);
-      canvasLineChart.classList.add('canvas__visible');
-    }, 0);
+    updateLineChartData(userEmailInput, commentBodyInput);
   });
 
   lineChartResetButton.addEventListener('click', () => {
-    canvasLineChart.classList.remove('canvas__visible');
     userEmailInput = '';
     commentBodyInput = '';
-    setTimeout(function () {
-      updateLineChartData(userEmailInput, commentBodyInput);
-      canvasLineChart.classList.add('canvas__visible');
-    }, 0);
+    updateLineChartData(userEmailInput, commentBodyInput);
   });
 }
