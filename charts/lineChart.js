@@ -6,10 +6,18 @@ const ctxLc = canvasLineChart.getContext('2d');
 const canvasWidthLc = canvasLineChart.clientWidth;
 const canvasHeightLc = canvasLineChart.clientHeight;
 const lineChartForm = document.forms.line_chart_form;
+const lineFirstMonthSelect = document.getElementById('lineFirstMonth');
+const lineSecondMonthSelect = document.getElementById('lineSecondMonth');
 const lineChartUseremailInput = lineChartForm.elements.lineUseremail;
-const lineChartCommentBodyInput = lineChartForm.elements.lineCommentbody;
 const lineChartSubmitButton = document.querySelector('.line-chart__button-submit');
 const lineChartResetButton = document.querySelector('.line-chart__button-reset');
+
+const months = [
+  'January', 'February', 'March', 'April', 'May', 'June', 
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export default function generateLineChart() {
   const commentsData = getData(COMMENTS_URL);
@@ -30,16 +38,24 @@ export default function generateLineChart() {
           email.toLowerCase().includes(userEmailInput.toLowerCase()) &&
           body.toLowerCase().includes(commentBodyInput.toLowerCase())
         );
-      }      
+      }
 
       const commentPerMonth = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0, '12': 0};
 
       comments.forEach((item) => {
         const month = parseInt(item.date.slice(5, 7));
         commentPerMonth[month] = (commentPerMonth[month] || 0) + 1;
-      });      
+      });
 
       ctxLc.clearRect(0, 0, canvasWidthLc, canvasHeightLc);
+
+      const startMonth = parseInt(lineFirstMonthSelect.value);
+      const endMonth = parseInt(lineSecondMonthSelect.value);
+      
+      comments = comments.filter(({ date }) => {
+        const month = parseInt(date.slice(5, 7));
+        return month >= startMonth && month <= endMonth;
+      });
 
       // X axis
       ctxLc.beginPath();
@@ -60,14 +76,15 @@ export default function generateLineChart() {
       ctxLc.stroke();
       ctxLc.closePath();
 
-      const monthsLength = (canvasWidthLc - 70 - 50) / 12;
-      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const totalMonths = endMonth - startMonth + 1;
+      const monthsLength = (canvasWidthLc - 70 - 50) / totalMonths;
 
-      for (let i = 0; i < 12; i++) {
+      for (let i = 0; i < totalMonths; i++) {
+        const monthIndex = startMonth + i - 1;
         ctxLc.font = '14px Arial';
         ctxLc.fillStyle = '#000000';
         ctxLc.textBaseline = 'top';
-        ctxLc.fillText(months[i], 60 + monthsLength * i, canvasHeightLc - 35);
+        ctxLc.fillText(shortMonths[monthIndex], 70 + monthsLength * i, canvasHeightLc - 35);
 
         ctxLc.beginPath();
         ctxLc.strokeStyle = 'rgba(153,153,153,0.5)';
@@ -77,7 +94,7 @@ export default function generateLineChart() {
         ctxLc.closePath();
       }
 
-      let maxNumberOfCommentsPerMonth = Object.values(commentPerMonth).sort((a, b) => b - a)[0];
+      let maxNumberOfCommentsPerMonth = Object.values(commentPerMonth).slice(startMonth - 1, endMonth).sort((a, b) => b - a)[0];
 
       const commentsLength = maxNumberOfCommentsPerMonth / 8;
 
@@ -111,9 +128,9 @@ export default function generateLineChart() {
       ctxLc.strokeStyle = '#0e83b5';
       ctxLc.lineWidth = 3;
 
-      for (let i = 0; i < 12; i++) {
-        const startY = canvasHeightLc - 50 - (Object.values(commentPerMonth)[i] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
-        const endY = canvasHeightLc - 50 - (Object.values(commentPerMonth)[i + 1] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
+      for (let i = 0; i < totalMonths - 1; i++) {
+        const startY = canvasHeightLc - 50 - (Object.values(commentPerMonth)[startMonth + i - 1] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
+        const endY = canvasHeightLc - 50 - (Object.values(commentPerMonth)[startMonth + i] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
 
         ctxLc.moveTo(70 + i * monthsLength, startY);
         ctxLc.lineTo(70 + monthsLength * (i + 1), endY);
@@ -156,26 +173,47 @@ export default function generateLineChart() {
   updateLineChartData();
 
   let userEmailInput = '';
-  let commentBodyInput = '';
 
   lineChartSubmitButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    canvasLineChart.classList.remove('canvas__visible');
     userEmailInput = lineChartUseremailInput.value;
-    commentBodyInput = lineChartCommentBodyInput.value;
-    setTimeout(function () {
-      updateLineChartData(userEmailInput, commentBodyInput);
-      canvasLineChart.classList.add('canvas__visible');
-    }, 0);
+    updateLineChartData(userEmailInput);
   });
 
   lineChartResetButton.addEventListener('click', () => {
-    canvasLineChart.classList.remove('canvas__visible');
     userEmailInput = '';
-    commentBodyInput = '';
-    setTimeout(function () {
-      updateLineChartData(userEmailInput, commentBodyInput);
-      canvasLineChart.classList.add('canvas__visible');
-    }, 0);
+    lineFirstMonthSelect.value = '1';
+    lineSecondMonthSelect.value = '2';
+    updateLineChartData(userEmailInput);
   });
 }
+
+months.forEach((month, index) => {
+  const option = document.createElement('option');
+  option.value = index + 1;
+  option.textContent = month;
+  lineFirstMonthSelect.appendChild(option);
+  if (index === 0) {
+    option.selected = true;
+  }
+  if (index === 1) {
+    const secondOption = option.cloneNode(true);
+    secondOption.selected = true;
+    lineSecondMonthSelect.appendChild(secondOption);
+  } else {
+    lineSecondMonthSelect.appendChild(option.cloneNode(true));
+  }
+});
+
+lineFirstMonthSelect.addEventListener('change', () => {
+  const selectedIndex = lineFirstMonthSelect.selectedIndex;
+  
+  lineSecondMonthSelect.innerHTML = '';
+  
+  for (let i = selectedIndex + 1; i < months.length; i++) {
+    const option = document.createElement('option');
+    option.value = i + 1;
+    option.textContent = months[i];
+    lineSecondMonthSelect.appendChild(option);
+  }
+});     

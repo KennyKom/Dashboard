@@ -92,7 +92,7 @@ export default function generatePieChart() {
         ctxPc.fillStyle = '#000';
 
         ctxPc.fillText(
-          `${user.username} (${percentage.toFixed(1)}%)`,
+          `${user.username} ${percentage.toFixed(0)}%`,
           canvasWidthPc - 185,
           45 + heightIterator,
         );
