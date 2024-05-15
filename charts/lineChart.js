@@ -177,8 +177,6 @@ export default function generateLineChart() {
   lineChartSubmitButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     userEmailInput = lineChartUseremailInput.value;
-    commentBodyInput = lineChartCommentBodyInput.value;
-    updateLineChartData(userEmailInput, commentBodyInput);
     updateLineChartData(userEmailInput);
   });
 
@@ -219,8 +217,3 @@ lineFirstMonthSelect.addEventListener('change', () => {
     lineSecondMonthSelect.appendChild(option);
   }
 });     
-
-    commentBodyInput = '';
-    updateLineChartData(userEmailInput, commentBodyInput);
-  });
-}
