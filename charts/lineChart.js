@@ -51,26 +51,26 @@ export default function generateLineChart() {
       // X axis
       ctxLc.beginPath();
       ctxLc.moveTo(70, canvasHeightLc - 50);
-      ctxLc.lineTo(canvasWidthLc - 80, canvasHeightLc - 50);
+      ctxLc.lineTo(canvasWidthLc - 40, canvasHeightLc - 50);
       ctxLc.stroke();
       ctxLc.closePath();
 
       ctxLc.beginPath();
-      ctxLc.moveTo(canvasWidthLc - 80, canvasHeightLc - 50);
-      ctxLc.lineTo(canvasWidthLc - 85, canvasHeightLc - 55);
+      ctxLc.moveTo(canvasWidthLc - 40, canvasHeightLc - 50);
+      ctxLc.lineTo(canvasWidthLc - 45, canvasHeightLc - 55);
       ctxLc.stroke();
       ctxLc.closePath();
 
       ctxLc.beginPath();
-      ctxLc.moveTo(canvasWidthLc - 80, canvasHeightLc - 50);
-      ctxLc.lineTo(canvasWidthLc - 85, canvasHeightLc - 45);
+      ctxLc.moveTo(canvasWidthLc - 40, canvasHeightLc - 50);
+      ctxLc.lineTo(canvasWidthLc - 45, canvasHeightLc - 45);
       ctxLc.stroke();
       ctxLc.closePath();
 
-      const totalMonths = endMonth - startMonth + 1;
+      const totalMonths = endMonth - startMonth;
       const monthsLength = (canvasWidthLc - 70 - 50) / totalMonths;
 
-      for (let i = 0; i < totalMonths; i++) {
+      for (let i = 0; i <= totalMonths; i++) {
         const monthIndex = startMonth + i - 1;
         ctxLc.font = '14px Arial';
         ctxLc.fillStyle = '#000000';
@@ -78,10 +78,10 @@ export default function generateLineChart() {
 
         if (i === 0) {
           ctxLc.fillText(shortMonths[monthIndex], 70, canvasHeightLc - 35);
-        } else if (i === totalMonths - 1) {
-          ctxLc.fillText(shortMonths[monthIndex], canvasWidthLc - 100, canvasHeightLc - 35);
+        } else if (i === totalMonths) {
+          ctxLc.fillText(shortMonths[monthIndex], canvasWidthLc - 65, canvasHeightLc - 35);
         } else {
-          ctxLc.fillText(shortMonths[monthIndex], 70 + monthsLength * i, canvasHeightLc - 35);
+          ctxLc.fillText(shortMonths[monthIndex], 65 + monthsLength * i, canvasHeightLc - 35);
         }
       }
 
@@ -108,7 +108,7 @@ export default function generateLineChart() {
         ctxLc.strokeStyle = 'rgba(153,153,153,0.5)';
         ctxLc.moveTo(70, canvasHeightLc - 50 - ((canvasHeightLc - 50 - 35) / 10) * i);
         ctxLc.lineTo(
-          canvasWidthLc - 110,
+          canvasWidthLc - 50,
           canvasHeightLc - 50 - ((canvasHeightLc - 50 - 35) / 10) * i,
         );
         ctxLc.stroke();
@@ -119,12 +119,12 @@ export default function generateLineChart() {
       ctxLc.strokeStyle = '#0e83b5';
       ctxLc.lineWidth = 3;
 
-      for (let i = 0; i < totalMonths - 1; i++) {
+      for (let i = 0; i < totalMonths; i++) {
         const startY = canvasHeightLc - 50 - (commentPerMonth[startMonth + i - 1] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
         const endY = canvasHeightLc - 50 - (commentPerMonth[startMonth + i] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
 
         ctxLc.moveTo(70 + i * monthsLength, startY);
-        ctxLc.lineTo(450 + monthsLength * (i + 1), endY);
+        ctxLc.lineTo(70 + monthsLength * (i + 1), endY);
       }
 
       ctxLc.stroke();
@@ -157,7 +157,7 @@ export default function generateLineChart() {
       ctxLc.font = '16px Arial';
       ctxLc.fillStyle = '#000000';
       ctxLc.fillText('Comments', 10, 25);
-      ctxLc.fillText('Month', canvasWidthLc - 65, canvasHeightLc - 30);
+      ctxLc.fillText('Month', canvasWidthLc - 30, canvasHeightLc - 35);
     });
   }
 
@@ -167,7 +167,7 @@ export default function generateLineChart() {
     evt.preventDefault();
     const startMonth = parseInt(lineFirstMonthSelect.value);
     const endMonth = parseInt(lineSecondMonthSelect.value);
-    updateLineChartData(lineChartUseremailInput.value, startMonth, endMonth);
+    updateLineChartData(lineChartUseremailInput?.value, startMonth, endMonth);
   });
 
   lineChartResetButton.addEventListener('click', () => {
@@ -177,6 +177,7 @@ export default function generateLineChart() {
     updateLineChartData('', 1, 2);
   });
 }
+
 
 months.forEach((month, index) => {
   const option = document.createElement('option');
