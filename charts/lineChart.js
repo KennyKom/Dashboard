@@ -26,36 +26,27 @@ export default function generateLineChart() {
 
   const date = {};
 
-  function updateLineChartData(userEmailInput, commentBodyInput) {
+  function updateLineChartData(userEmailInput, startMonth, endMonth) {
     commentsData.then((data) => {
       let comments = data.map((comment) => ({
         ...comment,
         date: date[comment.id] ||= new Date(2023, Math.round(Math.random() * 11 + 1)).toISOString().split('T')[0]
       }));
 
-      if (userEmailInput || commentBodyInput) {
-        comments = comments.filter(({ email, body }) =>
-          email.toLowerCase().includes(userEmailInput.toLowerCase()) &&
-          body.toLowerCase().includes(commentBodyInput.toLowerCase())
+      if (userEmailInput) {
+        comments = comments.filter(({ email }) =>
+          email.toLowerCase().includes(userEmailInput.toLowerCase())
         );
       }
 
-      const commentPerMonth = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, '11': 0, '12': 0};
+      const commentPerMonth = Array(12).fill(0);
 
       comments.forEach((item) => {
-        const month = parseInt(item.date.slice(5, 7));
+        const month = parseInt(item.date.slice(5, 7)) - 1;
         commentPerMonth[month] = (commentPerMonth[month] || 0) + 1;
       });
 
       ctxLc.clearRect(0, 0, canvasWidthLc, canvasHeightLc);
-
-      const startMonth = parseInt(lineFirstMonthSelect.value);
-      const endMonth = parseInt(lineSecondMonthSelect.value);
-      
-      comments = comments.filter(({ date }) => {
-        const month = parseInt(date.slice(5, 7));
-        return month >= startMonth && month <= endMonth;
-      });
 
       // X axis
       ctxLc.beginPath();
@@ -84,17 +75,17 @@ export default function generateLineChart() {
         ctxLc.font = '14px Arial';
         ctxLc.fillStyle = '#000000';
         ctxLc.textBaseline = 'top';
-        ctxLc.fillText(shortMonths[monthIndex], 70 + monthsLength * i, canvasHeightLc - 35);
 
-        ctxLc.beginPath();
-        ctxLc.strokeStyle = 'rgba(153,153,153,0.5)';
-        ctxLc.moveTo(70 + i * monthsLength, canvasHeightLc - 50);
-        ctxLc.lineTo(70 + i * monthsLength, 65);
-        ctxLc.stroke();
-        ctxLc.closePath();
+        if (i === 0) {
+          ctxLc.fillText(shortMonths[monthIndex], 70, canvasHeightLc - 35);
+        } else if (i === totalMonths - 1) {
+          ctxLc.fillText(shortMonths[monthIndex], canvasWidthLc - 100, canvasHeightLc - 35);
+        } else {
+          ctxLc.fillText(shortMonths[monthIndex], 70 + monthsLength * i, canvasHeightLc - 35);
+        }
       }
 
-      let maxNumberOfCommentsPerMonth = Object.values(commentPerMonth).slice(startMonth - 1, endMonth).sort((a, b) => b - a)[0];
+      let maxNumberOfCommentsPerMonth = Math.max(...commentPerMonth.slice(startMonth - 1, endMonth));
 
       const commentsLength = maxNumberOfCommentsPerMonth / 8;
 
@@ -129,11 +120,11 @@ export default function generateLineChart() {
       ctxLc.lineWidth = 3;
 
       for (let i = 0; i < totalMonths - 1; i++) {
-        const startY = canvasHeightLc - 50 - (Object.values(commentPerMonth)[startMonth + i - 1] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
-        const endY = canvasHeightLc - 50 - (Object.values(commentPerMonth)[startMonth + i] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
+        const startY = canvasHeightLc - 50 - (commentPerMonth[startMonth + i - 1] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
+        const endY = canvasHeightLc - 50 - (commentPerMonth[startMonth + i] * (canvasHeightLc - 50 - 35)) / 10 / commentsLength;
 
         ctxLc.moveTo(70 + i * monthsLength, startY);
-        ctxLc.lineTo(70 + monthsLength * (i + 1), endY);
+        ctxLc.lineTo(450 + monthsLength * (i + 1), endY);
       }
 
       ctxLc.stroke();
@@ -170,21 +161,20 @@ export default function generateLineChart() {
     });
   }
 
-  updateLineChartData();
-
-  let userEmailInput = '';
+  updateLineChartData('', 1, 2);
 
   lineChartSubmitButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    userEmailInput = lineChartUseremailInput.value;
-    updateLineChartData(userEmailInput);
+    const startMonth = parseInt(lineFirstMonthSelect.value);
+    const endMonth = parseInt(lineSecondMonthSelect.value);
+    updateLineChartData(lineChartUseremailInput.value, startMonth, endMonth);
   });
 
   lineChartResetButton.addEventListener('click', () => {
-    userEmailInput = '';
+    lineChartUseremailInput.value = '';
     lineFirstMonthSelect.value = '1';
     lineSecondMonthSelect.value = '2';
-    updateLineChartData(userEmailInput);
+    updateLineChartData('', 1, 2);
   });
 }
 
@@ -216,4 +206,4 @@ lineFirstMonthSelect.addEventListener('change', () => {
     option.textContent = months[i];
     lineSecondMonthSelect.appendChild(option);
   }
-});     
+}); 
